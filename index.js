@@ -23,7 +23,12 @@ app.post('/', (req, res) => {
 		const price = data[0].price;
 		const dollar = Number(price).toFixed(2);
 
-		res.send(`<h1>The price of ${crypto} is ${dollar} ${fiat} </h1>`);
+		const priceDate = data[0].price_date;
+
+		res.write(`<p>The current date for the price is ${priceDate}</p>`);
+		res.write(`<h1>The price of ${crypto} is ${dollar} ${fiat} </h1>`);
+
+		res.send();
 	});
 });
 
