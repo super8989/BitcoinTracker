@@ -2,6 +2,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
 
+require('dotenv').config();
+const api_key = process.env.API_KEY;
+console.log(process.env);
+
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -15,9 +19,18 @@ app.post('/', (req, res) => {
 	const crypto = req.body.crypto;
 	const fiat = req.body.fiat;
 
-	const URL = `https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=${crypto}&convert=${fiat}`;
+	// const URL = `https://api.nomics.com/v1/currencies/ticker?key=demo-26240835858194712a4f8cc0dc635c7a&ids=${crypto}&convert=${fiat}`;
 
-	request(URL, (error, response, body) => {
+	const options = {
+		url: `https://api.nomics.com/v1/currencies/ticker?key=${api_key}`,
+		method: 'GET',
+		qs: {
+			ids: crypto,
+			convert: fiat
+		}
+	};
+
+	request(options, (error, response, body) => {
 		const data = JSON.parse(body);
 		// console.log(data[0].price);
 		const price = data[0].price;
